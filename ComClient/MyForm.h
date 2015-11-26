@@ -159,6 +159,7 @@ namespace ComClient {
 				 //CommTimeOuts.WriteTotalTimeoutConstant = 1000;
 				 // Sending stuff
 				 char* dat;
+				 long int responsebytes;
 				 IntPtr initialStringPtr = Marshal::StringToHGlobalAnsi(TxInput->Text);
 				 char* converted = static_cast<char*>(initialStringPtr.ToPointer());
 				 unsigned int datasize = strlen(converted);
@@ -167,8 +168,8 @@ namespace ComClient {
 				 ReadFile(Port, &dat, 1, &written, 0);*/
 				 SerialPort port1("\\\\.\\COM10");
 				 port1.Write(converted, datasize);
-				 dat = port1.Read();
-				 dat[1] = '\0';
+				 dat = port1.Read(responsebytes);
+				 dat[responsebytes] = '\0';
 				 String^ ds = gcnew String(dat);
 				 RxOutput->Text = ds;
 				 Marshal::FreeHGlobal(initialStringPtr);
